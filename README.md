@@ -23,7 +23,3 @@ This mod also contains some client-side QOL features to make roles easier to see
 To run code once a role is assigned, use the `ModdedRoleAssigned` event.
 
 This library does not have a Maven, so you will have to manually add it through a `files()` call in your `build.gradle`.
-
-![img.png](img.png)
-
-Also makes this text rainbow and gives a role counter. Woohoo!

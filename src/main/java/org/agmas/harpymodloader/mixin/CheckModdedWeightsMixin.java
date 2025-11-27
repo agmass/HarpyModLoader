@@ -43,7 +43,7 @@ public class CheckModdedWeightsMixin {
             text = text.append("\n").append(player.getDisplayName());
             for (Role role : TMMRoles.ROLES) {
                 if (Harpymodloader.SPECIAL_ROLES.contains(role)) continue;
-                Integer roleRounds = ModdedWeights.roleWeights.get(role).getOrDefault(player.getUuid(), 0);
+                Integer roleRounds = ModdedWeights.roleRounds.get(role).getOrDefault(player.getUuid(), 0);
                 double roleWeight = Math.exp((-roleRounds * 4));
                 double rolePercentage = roleWeight / roleTotals.getOrDefault(role,1.0) * (double) 100.0F;
                 text.append(Text.literal("\n  ").append(role.identifier()+"").append(Text.literal(" (")).withColor(role.color()).append(Text.literal("%d".formatted(roleRounds)).withColor(8421504)).append(Text.literal("): ").withColor(role.color())).append(Text.literal("%.2f%%".formatted(rolePercentage)).withColor(8421504)));

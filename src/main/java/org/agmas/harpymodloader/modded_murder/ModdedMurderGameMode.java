@@ -78,6 +78,8 @@ public class ModdedMurderGameMode extends MurderGameMode {
     }
 
 
+
+
     public void assignKillerReplacingRoles(int desiredRoleCount, ServerWorld serverWorld, GameWorldComponent gameWorldComponent, List<ServerPlayerEntity> players) {
 
         // shuffle roles so modded roles are different every time
@@ -94,7 +96,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         for (Role role : shuffledKillerRoles) {
             if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
-            int roleSpecificDesireCount = desiredRoleCount;
+            int roleSpecificDesireCount = (int) Math.ceil((double) desiredRoleCount / players.size());
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 
             findAndAssignPlayers(roleSpecificDesireCount, role, playersForKillerRoles,gameWorldComponent,serverWorld);
@@ -151,8 +153,8 @@ public class ModdedMurderGameMode extends MurderGameMode {
         }
 
         for(ServerPlayerEntity player : assignedPlayers) {
-            ModdedRoleAssigned.EVENT.invoker().assignModdedRole(player,role);
             gameWorldComponent.addRole(player,role);
+            ModdedRoleAssigned.EVENT.invoker().assignModdedRole(player,role);
         }
     }
 

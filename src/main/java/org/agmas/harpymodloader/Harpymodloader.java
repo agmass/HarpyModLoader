@@ -58,6 +58,7 @@ public class Harpymodloader implements ModInitializer {
         registerCommands();
 
         MODDED_GAMEMODE = TMMGameModes.registerGameMode(Identifier.of(MOD_ID, "modded"), new ModdedMurderGameMode(Identifier.of(MOD_ID, "modded")));
+        refreshRoles();
     }
 
     //
