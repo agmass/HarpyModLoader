@@ -115,7 +115,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
                 PlayerEntity player = world.getPlayerByUuid(uuid);
                 if (player instanceof ServerPlayerEntity serverPlayer) {
                     if (players.contains(serverPlayer)) {
-                        gameWorldComponent.addRole(player, role);
+                        assignedPlayers.add(serverPlayer);
                         --desiredRoleCount;
                         ModdedWeights.roleRounds.get(role).put(player.getUuid(), ModdedWeights.roleRounds.get(role).getOrDefault(player.getUuid(), 1) + 1);
                     }
