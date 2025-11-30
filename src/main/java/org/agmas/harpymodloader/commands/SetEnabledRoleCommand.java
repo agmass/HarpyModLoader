@@ -7,6 +7,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -26,6 +28,7 @@ public class SetEnabledRoleCommand {
                 .executes(context -> execute(context.getSource(), StringArgumentType.getString(context, "role"), BoolArgumentType.getBool(context, "enabled"))))));
     }
     private static int execute(ServerCommandSource source, String roleName, boolean enabled) throws CommandSyntaxException {
+        HarpyModLoaderConfig.HANDLER.save();
         for (Role role : TMMRoles.ROLES) {
             if (role.identifier().getPath().equals(roleName)) {
                 boolean disabled = HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleName);
@@ -34,12 +37,10 @@ public class SetEnabledRoleCommand {
                 if (disabled && enabled) {
                     HarpyModLoaderConfig.HANDLER.instance().disabled.remove(roleName);
                     source.sendFeedback(() -> Text.translatable("commands.setenabledrole.enable.success", roleText), true);
-                }
-                else if (!disabled && !enabled) {
+                } else if (!disabled && !enabled) {
                     HarpyModLoaderConfig.HANDLER.instance().disabled.add(roleName);
                     source.sendFeedback(() -> Text.translatable("commands.setenabledrole.disable.success", roleText), true);
-                }
-                else throw ROLE_UNCHANGED_EXCEPTION.create();
+                } else throw ROLE_UNCHANGED_EXCEPTION.create();
 
                 HarpyModLoaderConfig.HANDLER.save();
                 return 1;

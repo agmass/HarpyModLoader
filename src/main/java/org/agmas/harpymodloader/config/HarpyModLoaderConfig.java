@@ -19,6 +19,6 @@ public class HarpyModLoaderConfig {
             .build();
 
     @SerialEntry(comment = "Disables roles from being in the role pool. use /listRoles to get role names, use /enableRoles to ban/unban them in-game (saves here).")
-    public List<String> disabled = List.of("");
+    public List<String> disabled = List.of();
 
 }

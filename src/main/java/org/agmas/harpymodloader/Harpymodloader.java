@@ -7,6 +7,8 @@ import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import dev.doctor4t.trainmurdermystery.client.gui.RoleAnnouncementTexts;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.loader.impl.util.log.Log;
+import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import org.agmas.harpymodloader.commands.ForceRoleCommand;
@@ -38,7 +40,6 @@ public class Harpymodloader implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        HarpyModLoaderConfig.HANDLER.save();
         HarpyModLoaderConfig.HANDLER.load();
         VANNILA_ROLES.add(TMMRoles.LOOSE_END);
         VANNILA_ROLES.add(TMMRoles.CIVILIAN);

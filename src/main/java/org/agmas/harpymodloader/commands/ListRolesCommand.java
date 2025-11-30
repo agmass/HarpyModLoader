@@ -15,6 +15,7 @@ public class ListRolesCommand {
         dispatcher.register(CommandManager.literal("listRoles").executes((context -> execute(context.getSource()))));
     }
     private static int execute(ServerCommandSource source) {
+        HarpyModLoaderConfig.HANDLER.save();
         MutableText message = Text.literal("Roles:");
         Text enabled = Text.literal("[Enabled] ").withColor(Colors.GREEN);
         Text disabled = Text.literal("[Disabled] ").withColor(Colors.RED);
