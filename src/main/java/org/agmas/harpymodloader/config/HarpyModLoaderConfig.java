@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.util.Identifier;
 import org.agmas.harpymodloader.Harpymodloader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HarpyModLoaderConfig {
@@ -19,6 +20,6 @@ public class HarpyModLoaderConfig {
             .build();
 
     @SerialEntry(comment = "Disables roles from being in the role pool. use /listRoles to get role names, use /enableRoles to ban/unban them in-game (saves here).")
-    public List<String> disabled = List.of();
+    public ArrayList<String> disabled = new ArrayList<>();
 
 }
