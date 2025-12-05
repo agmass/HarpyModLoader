@@ -61,7 +61,10 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         // shuffle roles so modded roles are different every time
         ArrayList<Role> shuffledCivillianRoles = new ArrayList<>(TMMRoles.ROLES);
-        shuffledCivillianRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller());
+        shuffledCivillianRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || !role.isInnocent());
+
+        ArrayList<Role> shuffledNeutralRoles = new ArrayList<>(TMMRoles.ROLES);
+        shuffledNeutralRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || role.isInnocent());
 
         ArrayList<ServerPlayerEntity> playersForCivillianRoles = new ArrayList<>(players);
         playersForCivillianRoles.removeIf(player -> {
@@ -70,6 +73,26 @@ public class ModdedMurderGameMode extends MurderGameMode {
         });
 
         Collections.shuffle(shuffledCivillianRoles);
+
+        int neutralDesiredRoleCount = (int)Math.floor(((float)players.size() / 6F));
+        int neutralRoleCount = 0;
+
+        for (Role role : shuffledCivillianRoles) {
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            neutralRoleCount++;
+        }
+        for (Role role : shuffledNeutralRoles) {
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            int roleSpecificDesireCount = Math.min((int) Math.ceil((double) playersForCivillianRoles.size() / neutralRoleCount), neutralDesiredRoleCount);
+            if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
+
+            findAndAssignPlayers(roleSpecificDesireCount, role, playersForCivillianRoles,gameWorldComponent,serverWorld);
+        }
+
+        playersForCivillianRoles.removeIf(player -> {
+            Role role = gameWorldComponent.getRole(player);
+            return !role.isInnocent();
+        });
 
         int roleCount= 0;
         for (Role role : shuffledCivillianRoles) {
