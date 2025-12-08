@@ -35,6 +35,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
         Harpymodloader.refreshRoles();
 
         ((TrainWorldComponent)TrainWorldComponent.KEY.get(serverWorld)).setTimeOfDay(TrainWorldComponent.TimeOfDay.NIGHT);
+        gameWorldComponent.clearRoleMap();
         for(ServerPlayerEntity player : players) {
             gameWorldComponent.addRole(player, TMMRoles.CIVILIAN);
         }
@@ -91,6 +92,10 @@ public class ModdedMurderGameMode extends MurderGameMode {
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 
             assignedNeutralRoles += findAndAssignPlayers(roleSpecificDesireCount, role, playersForCivillianRoles,gameWorldComponent,serverWorld);
+            playersForCivillianRoles.removeIf(player -> {
+                Role role2 = gameWorldComponent.getRole(player);
+                return !Harpymodloader.OVERWRITE_ROLES.contains(role2);
+            });
         }
 
         playersForCivillianRoles.removeIf(player -> {
@@ -110,6 +115,10 @@ public class ModdedMurderGameMode extends MurderGameMode {
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 
             findAndAssignPlayers(roleSpecificDesireCount, role, playersForCivillianRoles,gameWorldComponent,serverWorld);
+            playersForCivillianRoles.removeIf(player -> {
+                Role role2 = gameWorldComponent.getRole(player);
+                return !Harpymodloader.OVERWRITE_ROLES.contains(role2);
+            });
         }
     }
 
@@ -141,6 +150,10 @@ public class ModdedMurderGameMode extends MurderGameMode {
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 
             findAndAssignPlayers(roleSpecificDesireCount, role, playersForKillerRoles,gameWorldComponent,serverWorld);
+            playersForKillerRoles.removeIf(player -> {
+                Role role2 = gameWorldComponent.getRole(player);
+                return !Harpymodloader.OVERWRITE_ROLES.contains(role2);
+            });
         }
     }
 
@@ -166,7 +179,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
         float total = 0.0F;
 
         for(ServerPlayerEntity player : players) {
-            if (Harpymodloader.OVERWRITE_ROLES.contains(gameWorldComponent.getRole(player))) {
+            if (!Harpymodloader.FORCED_MODDED_ROLE_FLIP.containsKey(player.getUuid()) && Harpymodloader.OVERWRITE_ROLES.contains(gameWorldComponent.getRole(player))) {
                 float weight = (float)Math.exp((-ModdedWeights.roleRounds.get(role).getOrDefault(player.getUuid(),1) * 4));
                 if (!gameWorldComponent.areWeightsEnabled()) {
                     weight = 1.0F;
@@ -181,7 +194,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
             float random = world.getRandom().nextFloat() * total;
 
             for(Map.Entry<ServerPlayerEntity, Float> entry : map.entrySet()) {
-                if (Harpymodloader.OVERWRITE_ROLES.contains(gameWorldComponent.getRole(entry.getKey()))) {
+                if (!Harpymodloader.FORCED_MODDED_ROLE_FLIP.containsKey(entry.getKey().getUuid()) && Harpymodloader.OVERWRITE_ROLES.contains(gameWorldComponent.getRole(entry.getKey()))) {
                     random -= entry.getValue();
                     if (random <= 0.0F) {
                         assignedPlayers.add(entry.getKey());
@@ -197,6 +210,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
         int i = 0;
         for(ServerPlayerEntity player : assignedPlayers) {
             gameWorldComponent.addRole(player,role);
+            Log.info(LogCategory.GENERAL, player.getNameForScoreboard() + " || " + role.identifier());
             ModdedRoleAssigned.EVENT.invoker().assignModdedRole(player,role);
             i++;
         }
