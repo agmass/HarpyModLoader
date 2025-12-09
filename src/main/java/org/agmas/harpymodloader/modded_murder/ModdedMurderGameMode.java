@@ -167,7 +167,6 @@ public class ModdedMurderGameMode extends MurderGameMode {
                 if (player instanceof ServerPlayerEntity serverPlayer) {
                     if (players.contains(serverPlayer)) {
                         assignedPlayers.add(serverPlayer);
-                        gameWorldComponent.addRole(player,role);
                         --desiredRoleCount;
                         ModdedWeights.roleRounds.get(role).put(player.getUuid(), ModdedWeights.roleRounds.get(role).getOrDefault(player.getUuid(), 1) + 1);
                     }
@@ -223,7 +222,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
         int killerCount = (int)Math.floor(((float)players.size() / 6F));
 
         List<ServerPlayerEntity> playersForVigilante = new ArrayList<>(players);
-        playersForVigilante.removeIf(player -> Harpymodloader.FORCED_MODDED_ROLE.containsKey(player.getUuid()));
+        playersForVigilante.removeIf(player -> Harpymodloader.FORCED_MODDED_ROLE_FLIP.containsKey(player.getUuid()));
 
         List<ServerPlayerEntity> playersForKiller = new ArrayList<>(players);
         playersForKiller.removeIf(player -> {
