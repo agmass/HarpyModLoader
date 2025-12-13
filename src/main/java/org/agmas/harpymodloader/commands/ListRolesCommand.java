@@ -21,7 +21,7 @@ public class ListRolesCommand {
         Text disabled = Text.literal("[Disabled] ").withColor(Colors.RED);
         for (Role role : TMMRoles.ROLES) {
             message.append("\n");
-            String roleName = role.identifier().getPath();
+            String roleName = role.identifier().toString();
             if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleName)) message.append(disabled);
             else message.append(enabled);
             message.append(Text.literal(roleName).withColor(role.color()));
