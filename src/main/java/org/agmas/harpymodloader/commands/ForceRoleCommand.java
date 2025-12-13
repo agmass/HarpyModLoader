@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,9 +23,9 @@ public class ForceRoleCommand {
                 .requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
                 .then(CommandManager.argument("player", EntityArgumentType.player())
                         .executes(context -> query(context.getSource(), EntityArgumentType.getPlayer(context, "player")))
-                .then(CommandManager.argument("role", StringArgumentType.string())
+                .then(CommandManager.argument("role", IdentifierArgumentType.identifier())
                         .suggests(new RoleSuggestionProvider())
-                        .executes(context -> execute(context.getSource(), EntityArgumentType.getPlayer(context,"player"), StringArgumentType.getString(context,"role"))))));
+                        .executes(context -> execute(context.getSource(), EntityArgumentType.getPlayer(context,"player"), IdentifierArgumentType.getIdentifier(context,"role").toString())))));
     }
     private static int query(ServerCommandSource source, ServerPlayerEntity targetPlayer) {
         if (!Harpymodloader.FORCED_MODDED_ROLE_FLIP.containsKey(targetPlayer.getUuid())) {
@@ -38,7 +39,7 @@ public class ForceRoleCommand {
     }
     private static int execute(ServerCommandSource source, ServerPlayerEntity targetPlayer, String roleName) throws CommandSyntaxException {
         for (Role role : TMMRoles.ROLES) {
-            if (role.identifier().getPath().equals(roleName)) {
+            if (role.identifier().toString().equals(roleName)) {
                 Harpymodloader.addToForcedRoles(role,targetPlayer);
                 source.sendFeedback(() -> Text.translatable("commands.forcerole.success", Text.literal(roleName).withColor(role.color()), targetPlayer.getDisplayName()), true);
                 return 1;

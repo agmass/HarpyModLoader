@@ -9,6 +9,7 @@ import dev.doctor4t.trainmurdermystery.api.Role;
 import dev.doctor4t.trainmurdermystery.api.TMMRoles;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
+import net.minecraft.command.argument.IdentifierArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -23,14 +24,14 @@ public class SetEnabledRoleCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("setEnabledRole")
                 .requires(serverCommandSource -> serverCommandSource.hasPermissionLevel(2))
-                .then(CommandManager.argument("role", StringArgumentType.string()).suggests(new RoleSuggestionProvider())
+                .then(CommandManager.argument("role", IdentifierArgumentType.identifier()).suggests(new RoleSuggestionProvider())
                 .then(CommandManager.argument("enabled", BoolArgumentType.bool())
-                .executes(context -> execute(context.getSource(), StringArgumentType.getString(context, "role"), BoolArgumentType.getBool(context, "enabled"))))));
+                .executes(context -> execute(context.getSource(), IdentifierArgumentType.getIdentifier(context, "role").toString(), BoolArgumentType.getBool(context, "enabled"))))));
     }
     private static int execute(ServerCommandSource source, String roleName, boolean enabled) throws CommandSyntaxException {
         HarpyModLoaderConfig.HANDLER.save();
         for (Role role : TMMRoles.ROLES) {
-            if (role.identifier().getPath().equals(roleName)) {
+            if (role.identifier().toString().equals(roleName)) {
                 boolean disabled = HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleName);
                 Text roleText = Text.literal(roleName).withColor(role.color());
 

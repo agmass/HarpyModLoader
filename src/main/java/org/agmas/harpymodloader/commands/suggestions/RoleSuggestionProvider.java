@@ -22,8 +22,8 @@ public class RoleSuggestionProvider implements SuggestionProvider<ServerCommandS
 
         for (Role role : TMMRoles.ROLES) {
             if (Harpymodloader.VANNILA_ROLES.contains(role)) continue;
-            if (role != null && CommandSource.shouldSuggest(builder.getRemaining(), role.identifier().getPath())) {
-                builder.suggest(role.identifier().getPath());
+            if (role != null && CommandSource.shouldSuggest(builder.getRemaining(), role.identifier().toString())) {
+                builder.suggest(role.identifier().toString());
             }
         }
         return builder.buildFuture();
