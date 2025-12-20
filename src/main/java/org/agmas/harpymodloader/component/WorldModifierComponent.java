@@ -76,8 +76,6 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
 
     public void setModifiers(List<UUID> players, Modifier modifier) {
 
-        modifiers.clear();
-
         for(UUID player : players) {
             addModifier(player, modifier);
         }
@@ -92,6 +90,7 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
     @Override
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
 
+        modifiers.clear();
         for(Modifier modifier : HMLModifiers.MODIFIERS) {
             setModifiers(this.uuidListFromNbt(nbtCompound, modifier.identifier().toString()), modifier);
         }

@@ -19,8 +19,8 @@ public class Modifier {
         this.color = color;
         this.cannotBeAppliedTo = cannotBeAppliedTo;
         this.canOnlyBeAppliedTo = canOnlyBeAppliedTo;
-        this.killerOnly = false;
-        this.civilianOnly = false;
+        this.killerOnly = killerOnly;
+        this.civilianOnly = civilianOnly;
     }
 
     public Identifier identifier() {
