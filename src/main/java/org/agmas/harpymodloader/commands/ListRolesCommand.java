@@ -9,6 +9,8 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import org.agmas.harpymodloader.config.HarpyModLoaderConfig;
+import org.agmas.harpymodloader.modifiers.HMLModifiers;
+import org.agmas.harpymodloader.modifiers.Modifier;
 
 public class ListRolesCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -25,6 +27,14 @@ public class ListRolesCommand {
             if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleName)) message.append(disabled);
             else message.append(enabled);
             message.append(Text.literal(roleName).withColor(role.color()));
+        }
+        message = message.append("\n\nModifiers:").withColor(Colors.GREEN);
+        for (Modifier modifier : HMLModifiers.MODIFIERS) {
+            message.append("\n");
+            String roleName = modifier.identifier().getPath();
+            if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(roleName)) message.append(disabled);
+            else message.append(enabled);
+            message.append(Text.literal(roleName).withColor(modifier.color()));
         }
         source.sendMessage(message);
         return 1;

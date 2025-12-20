@@ -95,6 +95,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
             }
 
             for (ServerPlayerEntity player : shuffledPlayers) {
+                if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(mod.identifier.getPath())) continue;
                 if (playersAssigned >= desiredRoleCount) continue;
 
                 if (Harpymodloader.MODIFIER_MAX.containsKey(mod.identifier))

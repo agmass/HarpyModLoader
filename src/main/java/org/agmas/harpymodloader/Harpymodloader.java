@@ -11,10 +11,7 @@ import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import org.agmas.harpymodloader.commands.ForceModifierCommand;
-import org.agmas.harpymodloader.commands.ForceRoleCommand;
-import org.agmas.harpymodloader.commands.ListRolesCommand;
-import org.agmas.harpymodloader.commands.SetEnabledRoleCommand;
+import org.agmas.harpymodloader.commands.*;
 import org.agmas.harpymodloader.config.HarpyModLoaderConfig;
 import org.agmas.harpymodloader.modded_murder.ModdedMurderGameMode;
 import org.agmas.harpymodloader.modded_murder.ModdedWeights;
@@ -112,6 +109,7 @@ public class Harpymodloader implements ModInitializer {
             SetEnabledRoleCommand.register(dispatcher);
             ListRolesCommand.register(dispatcher);
             ForceModifierCommand.register(dispatcher);
+            SetEnabledModifierCommand.register(dispatcher);
         });
     }
 
