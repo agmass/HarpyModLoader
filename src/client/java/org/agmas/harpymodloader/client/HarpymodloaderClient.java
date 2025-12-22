@@ -27,6 +27,10 @@ public class HarpymodloaderClient implements ClientModInitializer {
     }
 
     public static MutableText getRoleName(Role role) {
+        // vanilla
+        if (role.identifier().getNamespace().equalsIgnoreCase("wathe")) {
+            return Text.translatable("announcement.role." + role.identifier().getPath());
+        }
         return Text.translatable("announcement.role." + role.identifier().toTranslationKey());
     }
 }

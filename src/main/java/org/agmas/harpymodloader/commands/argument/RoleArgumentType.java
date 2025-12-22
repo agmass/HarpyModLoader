@@ -16,7 +16,10 @@ import net.minecraft.command.argument.serialize.ArgumentSerializer;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import org.agmas.harpymodloader.Harpymodloader;
@@ -24,6 +27,7 @@ import org.agmas.harpymodloader.Harpymodloader;
 public class RoleArgumentType implements ArgumentType<Role> {
     public static final DynamicCommandExceptionType ROLE_EMPTY = new DynamicCommandExceptionType(input -> Text.translatable("argument.harpymodloader.role.notfound", input));
     public static final DynamicCommandExceptionType ROLE_MULTIPLE = new DynamicCommandExceptionType(input -> Text.translatable("argument.harpymodloader.role.found-multiple", input));
+    private static final Collection<String> EXAMPLES = Arrays.asList("foo", "foo:bar", "012");
 
     private final boolean skipVanilla;
 
@@ -49,13 +53,13 @@ public class RoleArgumentType implements ArgumentType<Role> {
 
     @Override
     public Role parse(final StringReader reader) throws CommandSyntaxException {
-        final String roleId = reader.readString();
+        final Identifier roleId = Identifier.fromCommandInput(reader);
         List<Role> matchRoles = new ArrayList<>();
         for (final Role role : WatheRoles.ROLES) {
             if (skipVanilla && Harpymodloader.VANNILA_ROLES.contains(role)) {
                 continue;
             }
-            if (role.identifier().getPath().equalsIgnoreCase(roleId) || role.identifier().toString().equalsIgnoreCase(roleId)) {
+            if (role.identifier().equals(roleId)) {
                 matchRoles.add(role);
             }
         }
@@ -71,11 +75,16 @@ public class RoleArgumentType implements ArgumentType<Role> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
         return CommandSource.suggestFromIdentifier(
-                WatheRoles.ROLES.stream().filter(role -> !skipVanilla || Harpymodloader.VANNILA_ROLES.contains(role)),
+                WatheRoles.ROLES.stream().filter(role -> !skipVanilla || !Harpymodloader.VANNILA_ROLES.contains(role)),
                 builder,
                 Role::identifier,
                 Harpymodloader::getRoleName
         );
+    }
+
+    @Override
+    public Collection<String> getExamples() {
+        return EXAMPLES;
     }
 
     public static class Serializer implements ArgumentSerializer<RoleArgumentType, Serializer.Properties> {
