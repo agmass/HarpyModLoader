@@ -1,14 +1,17 @@
 {
+  "argument.harpymodloader.role.notfound": "%s role not found",
+  "argument.harpymodloader.role.found-multiple": "There are multiple roles in %s",
+  "argument.harpymodloader.modifier.notfound": "%s modifier not found",
+  "argument.harpymodloader.modifier.found-multiple": "There are multiple modifiers in %s",
+
   "commands.setenabledrole.unchanged": "Nothing changed",
-  "commands.setenabledrole.invalid": "Invalid role name",
   "commands.setenabledrole.enable.success": "Role %s has been enabled",
   "commands.setenabledrole.disable.success": "Role %s has been disabled",
 
-  "commands.forcerole.invalid": "Invalid role name",
   "commands.forcerole.success": "Forced role %s to player %s",
   "commands.forcerole.query": "Player %s is forced to have role %s",
   "commands.forcerole.query.none": "Player %s does not have a forced role",
 
-  "announcement.modifier": "Modifier(s):",
+  "announcement.modifier": "Modifier(s): ",
   "announcement.no_modifiers": "No Modifiers"
 }

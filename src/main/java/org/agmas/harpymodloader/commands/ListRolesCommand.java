@@ -8,6 +8,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
+import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.config.HarpyModLoaderConfig;
 import org.agmas.harpymodloader.modifiers.HMLModifiers;
 import org.agmas.harpymodloader.modifiers.Modifier;
@@ -16,6 +17,7 @@ public class ListRolesCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("listRoles").executes((context -> execute(context.getSource()))));
     }
+
     private static int execute(ServerCommandSource source) {
         HarpyModLoaderConfig.HANDLER.save();
         MutableText message = Text.literal("Roles:");
@@ -23,18 +25,20 @@ public class ListRolesCommand {
         Text disabled = Text.literal("[Disabled] ").withColor(Colors.RED);
         for (Role role : WatheRoles.ROLES) {
             message.append("\n");
-            String roleName = role.identifier().getPath();
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleName)) message.append(disabled);
+            String roleId = role.identifier().toString();
+            final MutableText roleName = Harpymodloader.getRoleName(role);
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleId)) message.append(disabled);
             else message.append(enabled);
-            message.append(Text.literal(roleName).withColor(role.color()));
+            message.append(Text.literal(roleId).withColor(role.color()).append(" ").append(roleName));
         }
         message = message.append("\n\nModifiers:").withColor(Colors.GREEN);
         for (Modifier modifier : HMLModifiers.MODIFIERS) {
             message.append("\n");
-            String roleName = modifier.identifier().getPath();
-            if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(roleName)) message.append(disabled);
+            String roleId = modifier.identifier().toString();
+            final MutableText modifierName = modifier.getName(true);
+            if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(roleId)) message.append(disabled);
             else message.append(enabled);
-            message.append(Text.literal(roleName).withColor(modifier.color()));
+            message.append(Text.literal(roleId).withColor(modifier.color()).append(" ").append(modifierName));
         }
         source.sendMessage(message);
         return 1;
