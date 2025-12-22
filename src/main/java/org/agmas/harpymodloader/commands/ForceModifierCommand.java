@@ -7,6 +7,8 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.commands.argument.ModifierArgumentType;
@@ -25,7 +27,9 @@ public class ForceModifierCommand {
         ServerPlayerEntity targetPlayer = EntityArgumentType.getPlayer(context, "player");
         Modifier modifier = ModifierArgumentType.getModifier(context, "modifier");
         Harpymodloader.addToForcedModifiers(modifier, targetPlayer);
-        context.getSource().sendFeedback(() -> Text.translatable("commands.forcerole.success", modifier.getName(true), targetPlayer.getDisplayName()), true);
+        final MutableText modifierName = modifier.getName(true).styled(style ->
+                style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(modifier.identifier().toString()))));
+        context.getSource().sendFeedback(() -> Text.translatable("commands.forcerole.success", modifierName, targetPlayer.getDisplayName()), true);
         return 1;
     }
 }
