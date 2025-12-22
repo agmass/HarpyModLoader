@@ -7,8 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import dev.doctor4t.wathe.api.Role;
-import dev.doctor4t.wathe.api.WatheRoles;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -50,6 +48,6 @@ public class ModifierArgumentType implements ArgumentType<Modifier> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
-        return CommandSource.suggestIdentifiers(WatheRoles.ROLES.stream().map(Role::identifier), builder);
+        return CommandSource.suggestFromIdentifier(HMLModifiers.MODIFIERS.stream(), builder, Modifier::identifier, Modifier::getName);
     }
 }

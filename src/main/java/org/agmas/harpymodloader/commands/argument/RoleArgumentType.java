@@ -70,14 +70,15 @@ public class RoleArgumentType implements ArgumentType<Role> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
-        return CommandSource.suggestIdentifiers(
-                WatheRoles.ROLES.stream()
-                        .filter(role -> !skipVanilla || Harpymodloader.VANNILA_ROLES.contains(role))
-                        .map(Role::identifier),
-                builder);
+        return CommandSource.suggestFromIdentifier(
+                WatheRoles.ROLES.stream().filter(role -> !skipVanilla || Harpymodloader.VANNILA_ROLES.contains(role)),
+                builder,
+                Role::identifier,
+                Harpymodloader::getRoleName
+        );
     }
 
-    public static class Serializer implements ArgumentSerializer<RoleArgumentType, Serializer.Properties>{
+    public static class Serializer implements ArgumentSerializer<RoleArgumentType, Serializer.Properties> {
 
         @Override
         public void writePacket(final Properties properties, final PacketByteBuf buf) {
@@ -99,7 +100,7 @@ public class RoleArgumentType implements ArgumentType<Role> {
             return new Properties(argumentType.skipVanilla);
         }
 
-        public class Properties implements ArgumentSerializer.ArgumentTypeProperties<RoleArgumentType>{
+        public class Properties implements ArgumentSerializer.ArgumentTypeProperties<RoleArgumentType> {
             private final boolean skipVanilla;
 
             public Properties(final boolean skipVanilla) {
