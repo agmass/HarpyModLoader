@@ -1,9 +1,5 @@
 package org.agmas.harpymodloader.component;
 
-import dev.doctor4t.wathe.api.Role;
-import dev.doctor4t.wathe.api.WatheRoles;
-import net.fabricmc.loader.impl.util.log.Log;
-import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,21 +8,19 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.modifiers.HMLModifiers;
 import org.agmas.harpymodloader.modifiers.Modifier;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.ClientTickingComponent;
 import org.ladysnake.cca.api.v3.component.tick.ServerTickingComponent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 public class WorldModifierComponent implements AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
     public static final ComponentKey<WorldModifierComponent> KEY = ComponentRegistry.getOrCreate(Identifier.of(Harpymodloader.MOD_ID, "modifier"), WorldModifierComponent.class);
@@ -43,12 +37,22 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
         sync();
     }
 
-    public boolean isRole(@NotNull PlayerEntity player, Modifier role) {
-        return this.isRole(player.getUuid(), role);
+    @Deprecated
+    public boolean isRole(@NotNull PlayerEntity player, Modifier modifier) {
+        return isModifier(player, modifier);
     }
 
-    public boolean isRole(@NotNull UUID uuid, Modifier role) {
-        return getModifiers(uuid).contains(role);
+    @Deprecated
+    public boolean isRole(@NotNull UUID uuid, Modifier modifier) {
+        return isModifier(uuid, modifier);
+    }
+
+    public boolean isModifier(@NotNull PlayerEntity player, Modifier modifier) {
+        return this.isModifier(player.getUuid(), modifier);
+    }
+
+    public boolean isModifier(@NotNull UUID uuid, Modifier modifier) {
+        return getModifiers(uuid).contains(modifier);
     }
 
     public HashMap<UUID, ArrayList<Modifier>> getModifiers() {
@@ -76,7 +80,7 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
 
     public void setModifiers(List<UUID> players, Modifier modifier) {
 
-        for(UUID player : players) {
+        for (UUID player : players) {
             addModifier(player, modifier);
         }
 
@@ -91,7 +95,7 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
     public void readFromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
 
         modifiers.clear();
-        for(Modifier modifier : HMLModifiers.MODIFIERS) {
+        for (Modifier modifier : HMLModifiers.MODIFIERS) {
             setModifiers(this.uuidListFromNbt(nbtCompound, modifier.identifier().toString()), modifier);
         }
     }
@@ -99,10 +103,11 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
     @Override
     public void writeToNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup wrapperLookup) {
 
-        for(Modifier modifier : HMLModifiers.MODIFIERS) {
+        for (Modifier modifier : HMLModifiers.MODIFIERS) {
             nbtCompound.put(modifier.identifier().toString(), this.nbtFromUuidList(getAllWithModifier(modifier)));
         }
     }
+
     public void sync() {
         KEY.sync(this.world);
     }
@@ -115,7 +120,7 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
     private ArrayList<UUID> uuidListFromNbt(NbtCompound nbtCompound, String listName) {
         ArrayList<UUID> ret = new ArrayList();
 
-        for(NbtElement e : nbtCompound.getList(listName, 11)) {
+        for (NbtElement e : nbtCompound.getList(listName, 11)) {
             ret.add(NbtHelper.toUuid(e));
         }
 
@@ -125,7 +130,7 @@ public class WorldModifierComponent implements AutoSyncedComponent, ServerTickin
     private NbtList nbtFromUuidList(List<UUID> list) {
         NbtList ret = new NbtList();
 
-        for(UUID player : list) {
+        for (UUID player : list) {
             ret.add(NbtHelper.fromUuid(player));
         }
 

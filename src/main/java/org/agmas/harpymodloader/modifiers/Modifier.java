@@ -1,8 +1,9 @@
 package org.agmas.harpymodloader.modifiers;
 
 import dev.doctor4t.wathe.api.Role;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
 import java.util.ArrayList;
 
 public class Modifier {
@@ -25,6 +26,18 @@ public class Modifier {
 
     public Identifier identifier() {
         return this.identifier;
+    }
+
+    public MutableText getName() {
+        return getName(false);
+    }
+
+    public MutableText getName(boolean color) {
+        final MutableText text = Text.translatable("announcement.modifier." + identifier().toTranslationKey());
+        if (color) {
+            return text.withColor(color());
+        }
+        return text;
     }
 
     public int color() {

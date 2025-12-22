@@ -1,6 +1,5 @@
 package org.agmas.harpymodloader.modded_murder;
 
-import dev.doctor4t.wathe.Wathe;
 import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
@@ -17,9 +16,16 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.component.WorldModifierComponent;
 import org.agmas.harpymodloader.config.HarpyModLoaderConfig;
@@ -27,10 +33,7 @@ import org.agmas.harpymodloader.events.ModdedRoleAssigned;
 import org.agmas.harpymodloader.events.ModifierAssigned;
 import org.agmas.harpymodloader.events.ResetPlayerEvent;
 import org.agmas.harpymodloader.modifiers.HMLModifiers;
-import org.agmas.harpymodloader.modifiers.Modifier;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
 
 public class ModdedMurderGameMode extends MurderGameMode {
 
@@ -105,7 +108,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
             }
 
             for (ServerPlayerEntity player : shuffledPlayers) {
-                if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(mod.identifier.getPath())) continue;
+                if (HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(mod.identifier.toString())) continue;
                 if (playersAssigned >= desiredRoleCount) continue;
 
                 if (Harpymodloader.MODIFIER_MAX.containsKey(mod.identifier))
@@ -146,10 +149,8 @@ public class ModdedMurderGameMode extends MurderGameMode {
         });
         for (ServerPlayerEntity player : players) {
             if (!worldModifierComponent.getModifiers(player).isEmpty()) {
-                MutableText modifiersText = Text.translatable("announcement.modifier").formatted(Formatting.GRAY);
-                for (Modifier modifier : worldModifierComponent.getModifiers(player)) {
-                    modifiersText = modifiersText.append(Text.literal(" ")) .append(Text.translatable("announcement.modifier." + modifier.identifier().getPath()).withColor(modifier.color()));
-                }
+                MutableText modifiersText = Text.translatable("announcement.modifier").formatted(Formatting.GRAY)
+                        .append(Texts.join(worldModifierComponent.getModifiers(player), Text.literal(", "), modifier -> modifier.getName(true)));
                 player.sendMessage(modifiersText, true);
             } else {
                 if (!HMLModifiers.MODIFIERS.isEmpty()) {
@@ -182,12 +183,12 @@ public class ModdedMurderGameMode extends MurderGameMode {
         int neutralRoleCount = 0;
 
         for (Role role : shuffledNeutralRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             neutralRoleCount++;
         }
 
         for (Role role : shuffledNeutralRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             if (assignedNeutralRoles >= neutralDesiredRoleCount) continue;
             int roleSpecificDesireCount = Math.min((int) Math.ceil((double) playersForCivillianRoles.size() / neutralRoleCount), desiredRoleCount);
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
@@ -206,12 +207,12 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         int roleCount= 0;
         for (Role role : shuffledCivillianRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             roleCount++;
         }
 
         for (Role role : shuffledCivillianRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             int roleSpecificDesireCount = Math.min((int) Math.max(Math.round((double) playersForCivillianRoles.size() / roleCount),1), desiredRoleCount);
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 
@@ -242,11 +243,11 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         int roleCount= 0;
         for (Role role : shuffledKillerRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             roleCount++;
         }
         for (Role role : shuffledKillerRoles) {
-            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().getPath())) continue;
+            if (HarpyModLoaderConfig.HANDLER.instance().disabled.contains(role.identifier().toString())) continue;
             int roleSpecificDesireCount = Math.min((int) Math.max(Math.round((double) playersForKillerRoles.size() / roleCount),1), desiredRoleCount);
             if (Harpymodloader.ROLE_MAX.containsKey(role.identifier())) roleSpecificDesireCount = Harpymodloader.ROLE_MAX.get(role.identifier());
 

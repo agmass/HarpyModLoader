@@ -4,8 +4,6 @@ import dev.doctor4t.wathe.api.Role;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.game.GameFunctions;
-import net.fabricmc.loader.impl.util.log.Log;
-import net.fabricmc.loader.impl.util.log.LogCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import org.agmas.harpymodloader.Harpymodloader;

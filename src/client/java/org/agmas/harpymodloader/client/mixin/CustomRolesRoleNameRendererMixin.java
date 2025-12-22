@@ -13,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.agmas.harpymodloader.client.HarpymodloaderClient;
+import org.agmas.harpymodloader.component.HarpyModLoaderComponents;
 import org.agmas.harpymodloader.component.WorldModifierComponent;
 import org.agmas.harpymodloader.modifiers.Modifier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,11 +33,11 @@ public abstract class CustomRolesRoleNameRendererMixin {
          GameWorldComponent gameWorldComponent = (GameWorldComponent) GameWorldComponent.KEY.get(player.getWorld());
          if (HarpymodloaderClient.hudRole != null) {
              if (WatheClient.isPlayerSpectatingOrCreative()) {
-                 MutableText name = Text.translatable("announcement.role." + HarpymodloaderClient.hudRole.identifier().getPath());
+                 MutableText name = HarpymodloaderClient.getRoleName(HarpymodloaderClient.hudRole);
                  WorldModifierComponent worldModifierComponent = WorldModifierComponent.KEY.get(player.getWorld());
                  if (HarpymodloaderClient.modifiers != null) {
                      for (Modifier modifier : HarpymodloaderClient.modifiers) {
-                         name.append(Text.literal(" [").append(Text.translatable("announcement.modifier." + modifier.identifier.getPath()).append("]")).withColor(modifier.color));
+                         name.append(Text.literal(" [").append(modifier.getName()).append("]").withColor(modifier.color));
                      }
                  }
                  context.drawTextWithShadow(renderer, name, -renderer.getWidth(name) / 2, 0, HarpymodloaderClient.hudRole.color() | (int) (nametagAlpha * 255.0F) << 24);

@@ -1,0 +1,53 @@
+package org.agmas.harpymodloader.commands.argument;
+
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.minecraft.command.CommandSource;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import org.agmas.harpymodloader.modifiers.HMLModifiers;
+import org.agmas.harpymodloader.modifiers.Modifier;
+
+public class ModifierArgumentType implements ArgumentType<Modifier> {
+    public static final DynamicCommandExceptionType MODIFIER_EMPTY = new DynamicCommandExceptionType(input -> Text.translatable("argument.harpymodloader.modifier.notfound", input));
+    public static final DynamicCommandExceptionType MODIFIER_MULTIPLE = new DynamicCommandExceptionType(input -> Text.translatable("argument.harpymodloader.modifier.found-multiple", input));
+
+    public static ModifierArgumentType create() {
+        return new ModifierArgumentType();
+    }
+
+    public static Modifier getModifier(CommandContext<ServerCommandSource> context, String name) {
+        return context.getArgument(name, Modifier.class);
+    }
+
+    @Override
+    public Modifier parse(final StringReader reader) throws CommandSyntaxException {
+        final String modifierId = reader.readString();
+        List<Modifier> result = new ArrayList<>();
+        for (final Modifier modifier : HMLModifiers.MODIFIERS) {
+            if (modifier.identifier().getPath().equalsIgnoreCase(modifierId) || modifier.identifier().toString().equalsIgnoreCase(modifierId)) {
+                result.add(modifier);
+            }
+        }
+        if (result.isEmpty()) {
+            throw MODIFIER_EMPTY.create(modifierId);
+        }
+        if (result.size() > 1) {
+            throw MODIFIER_MULTIPLE.create(modifierId);
+        }
+        return result.getFirst();
+    }
+
+    @Override
+    public <S> CompletableFuture<Suggestions> listSuggestions(final CommandContext<S> context, final SuggestionsBuilder builder) {
+        return CommandSource.suggestFromIdentifier(HMLModifiers.MODIFIERS.stream(), builder, Modifier::identifier, Modifier::getName);
+    }
+}
