@@ -34,7 +34,7 @@ public class ListRolesCommand {
         message.append(Texts.join(HMLModifiers.MODIFIERS, Text.literal("\n"), modifier -> {
             final boolean disabled = HarpyModLoaderConfig.HANDLER.instance().disabledModifiers.contains(modifier.identifier().toString());
             final MutableText status = createStatus(context.getSource(), disabled, "/setEnabledModifier " + modifier.identifier() + " " + disabled);
-            return buildElementText(modifier.getName(true), modifier.identifier(), status);
+            return buildElementText(modifier.getName().withColor(modifier.color), modifier.identifier(), status);
         }));
 
         context.getSource().sendMessage(message);
