@@ -8,9 +8,20 @@
   "commands.setenabledrole.enable.success": "角色 %s 已被启用",
   "commands.setenabledrole.disable.success": "角色 %s 已被禁用",
 
+  "commands.setenabledmodifier.unchanged": "未作更改",
+  "commands.setenabledmodifier.enable.success": "特殊状态 %s 已被启用",
+  "commands.setenabledmodifier.disable.success": "特殊状态 %s 已被禁用",
+
   "commands.forcerole.success": "已为玩家 %s 强制指定角色为 %s",
   "commands.forcerole.query": "玩家 %s 被强制指定的角色是 %s",
   "commands.forcerole.query.none": "玩家 %s 没有被强制指定的角色",
+
+  "commands.listroles.role.title": "§b角色:",
+  "commands.listroles.modifier.title": "§e特殊状态:",
+  "commands.listroles.status.enabled.text": "§a[已启用]",
+  "commands.listroles.status.enabled.hover": "§c点击以禁用\n%s",
+  "commands.listroles.status.disabled.text": "§c[已禁用]",
+  "commands.listroles.status.disabled.hover": "§a点击以启用\n%s",
 
   "announcement.modifier": "特殊状态: ",
   "announcement.no_modifiers": "没有特殊状态"

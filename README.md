@@ -1,3 +1,5 @@
+The only reason Claude is listed as a contributor is because of some chungus that used AI to fix a bug and i PR'd it. Fuck AI.
+
 # HarpyModLoader
 
 ---

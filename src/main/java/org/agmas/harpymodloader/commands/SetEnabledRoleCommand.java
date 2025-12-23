@@ -8,13 +8,13 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import dev.doctor4t.wathe.api.Role;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
 import org.agmas.harpymodloader.Harpymodloader;
 import org.agmas.harpymodloader.commands.argument.RoleArgumentType;
 import org.agmas.harpymodloader.config.HarpyModLoaderConfig;
 
 public class SetEnabledRoleCommand {
-    public static final SimpleCommandExceptionType INVALID_ROLE_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.setenabledrole.invalid"));
     public static final SimpleCommandExceptionType ROLE_UNCHANGED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.setenabledrole.unchanged"));
 
 
@@ -34,7 +34,7 @@ public class SetEnabledRoleCommand {
         HarpyModLoaderConfig.HANDLER.save();
         String roleId = role.identifier().toString();
         boolean disabled = HarpyModLoaderConfig.HANDLER.instance().disabled.contains(roleId);
-        Text roleText = Harpymodloader.getRoleName(role).withColor(role.color());
+        Text roleText = Harpymodloader.getRoleName(role).withColor(role.color()).styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal(roleId))));
 
         if (disabled && enabled) {
             HarpyModLoaderConfig.HANDLER.instance().disabled.remove(roleId);

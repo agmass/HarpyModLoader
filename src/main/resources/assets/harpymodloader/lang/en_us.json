@@ -8,9 +8,20 @@
   "commands.setenabledrole.enable.success": "Role %s has been enabled",
   "commands.setenabledrole.disable.success": "Role %s has been disabled",
 
+  "commands.setenabledmodifier.unchanged": "Nothing changed",
+  "commands.setenabledmodifier.enable.success": "Modifier %s has been enabled",
+  "commands.setenabledmodifier.disable.success": "Modifier %s has been disabled",
+
   "commands.forcerole.success": "Forced role %s to player %s",
   "commands.forcerole.query": "Player %s is forced to have role %s",
   "commands.forcerole.query.none": "Player %s does not have a forced role",
+
+  "commands.listroles.role.title": "§bRoles:",
+  "commands.listroles.modifier.title": "§eModifiers:",
+  "commands.listroles.status.enabled.text": "§a[Enabled]",
+  "commands.listroles.status.enabled.hover": "§cClick switch to Disabled\n%s",
+  "commands.listroles.status.disabled.text": "§c[Disabled]",
+  "commands.listroles.status.disabled.hover": "§aClick switch to Enabled\n%s",
 
   "announcement.modifier": "Modifier(s): ",
   "announcement.no_modifiers": "No Modifiers"
