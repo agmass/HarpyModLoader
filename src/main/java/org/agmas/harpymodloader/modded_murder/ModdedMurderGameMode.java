@@ -153,7 +153,6 @@ public class ModdedMurderGameMode extends MurderGameMode {
                 ModifierAssigned.EVENT.invoker().assignModifier(player, mod);
                 playersAssigned++;
             }
-
         });
         for (ServerPlayerEntity player : players) {
             if (!worldModifierComponent.getModifiers(player).isEmpty()) {

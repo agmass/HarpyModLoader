@@ -9,11 +9,22 @@ Modded role loader for the Harpy Express.
 
 Start games with the horn, autostart or `/wathe:start harpymodloader:modded (select your own map entry)` to start a game with modded roles.
 
-## For modders:
+## For add-on modders:
 
 ***Custom mods should use TMMRoles.registerRole() to add roles, then let this mod handle role assignment from there.***
 
 This mod is **not** required be imported into any mod! Importing the mod into your project is only nessecary if wanting to add items when a player spawns, a role is removed *OR* if you want to add new Modifiers.
+
+## For contributors
+
+1. Clone the repo
+2. `./gradlw --refreshDependencies`
+3. `mv ./sampleMaps ./run/saves/`
+4. \(optionally\) `mv ./sampleDatapacks ./run/saves/X/datapacks/`
+5. \(optionally\)`cp testmods.gradle.sample testmods.gradle`
+
+Watheextended datapack requires carpet mod and the watheextended mod for full functionality
+Include those in testmods.gradle.
 
 ## What does the mod do?
 

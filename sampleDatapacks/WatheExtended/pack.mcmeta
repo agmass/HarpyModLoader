@@ -1,0 +1,6 @@
+{
+    "pack": {
+        "description": "Debug tools and features for The Harpy Express: Extended modpack, intended to work with the default world-save only, but can be modified to fit with custom maps.",
+        "pack_format": 48
+    }
+}
