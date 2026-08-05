@@ -6,3 +6,6 @@ libs/*
 .vscode/*
 bin/*
 testmods.gradle
+.classpath/*
+.project/*
+.settings/*
