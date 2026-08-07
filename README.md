@@ -19,9 +19,9 @@ This mod is **not** required be imported into any mod! Importing the mod into yo
 
 1. Clone the repo
 2. `./gradlw --refreshDependencies`
-3. `mv ./sampleMaps ./run/saves/`
-4. \(optionally\) `mv ./sampleDatapacks ./run/saves/X/datapacks/`
-5. \(optionally\)`cp testmods.gradle.sample testmods.gradle`
+3. Place a map in run/saves
+4. \(optionally\) `cp testmods.gradle.sample testmods.gradle`
+5. \(optionally\) Place any testing datapacks in run/datapacks
 
 Watheextended datapack requires carpet mod and the watheextended mod for full functionality
 Include those in testmods.gradle.
