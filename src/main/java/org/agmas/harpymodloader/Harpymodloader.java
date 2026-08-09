@@ -22,8 +22,12 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.util.Language;
+
+import org.agmas.harpymodloader.commands.DisplayRosterCommand;
 import org.agmas.harpymodloader.commands.ForceModifierCommand;
 import org.agmas.harpymodloader.commands.ForceRoleCommand;
+import org.agmas.harpymodloader.commands.GuaranteeModifierCommand;
+import org.agmas.harpymodloader.commands.GuaranteeRoleCommand;
 import org.agmas.harpymodloader.commands.ListRolesCommand;
 import org.agmas.harpymodloader.commands.SetEnabledModifierCommand;
 import org.agmas.harpymodloader.commands.SetEnabledRoleCommand;
@@ -44,6 +48,9 @@ public class Harpymodloader implements ModInitializer {
     public static HashMap<UUID, Role> FORCED_MODDED_ROLE_FLIP = new HashMap<>();
 
     public static HashMap<Modifier, List<UUID>> FORCED_MODDED_MODIFIER = new HashMap<>();
+
+    public static HashMap<Role, Integer> GUARANTEED_MODDED_ROLE = new HashMap<>();
+    public static HashMap<Modifier, Integer> GUARANTEED_MODDED_MODIFIER = new HashMap<>();
 
     public static ArrayList<Role> VANNILA_ROLES = new ArrayList<>();
     public static ArrayList<Role> SPECIAL_ROLES = new ArrayList<>();
@@ -116,6 +123,14 @@ public class Harpymodloader implements ModInitializer {
         FORCED_MODDED_ROLE_FLIP.put(player.getUuid(), role);
     }
 
+    public static void addToGuaranteedRoles(Role role, int count){
+        GUARANTEED_MODDED_ROLE.put(role, count);
+    }
+
+    public static void addToGuaranteedModifiers(Modifier modifier, int count){
+        GUARANTEED_MODDED_MODIFIER.put(modifier, count);
+    }
+
     public static void setRoleMaximum(Identifier role, Integer max) {
         ROLE_MAX.put(role, max);
     }
@@ -140,8 +155,11 @@ public class Harpymodloader implements ModInitializer {
             ForceRoleCommand.register(dispatcher);
             SetEnabledRoleCommand.register(dispatcher);
             ListRolesCommand.register(dispatcher);
+            DisplayRosterCommand.register(dispatcher);
             ForceModifierCommand.register(dispatcher);
             SetEnabledModifierCommand.register(dispatcher);
+            GuaranteeRoleCommand.register(dispatcher);
+            GuaranteeModifierCommand.register(dispatcher);
         });
     }
 

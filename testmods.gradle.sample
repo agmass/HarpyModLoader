@@ -1,0 +1,21 @@
+repositories{
+    maven {
+        name = "FzzyMaven"
+        url = "https://maven.fzzyhmstrs.me/"
+    }
+}
+
+dependencies{
+    // DEVELOPMENT MODS
+    modRuntimeOnly "maven.modrinth:wathe-extended:3.4.132"
+
+    modRuntimeOnly "maven.modrinth:carpet:1.4.147"
+
+    // ADD-ON MODS
+
+    // fzzy config is an dependency for studpid express that doesn't exist on maven.modrinth
+    modRuntimeOnly "me.fzzyhmstrs:fzzy_config:0.7.6+1.21"
+    modRuntimeOnly "maven.modrinth:stupid-express:0.7.1"
+
+
+}

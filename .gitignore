@@ -2,5 +2,10 @@
 .idea/*
 build/*
 run/*
-gradle/*
 libs/*
+.vscode/*
+bin/*
+testmods.gradle
+.classpath
+.project
+.settings/*
