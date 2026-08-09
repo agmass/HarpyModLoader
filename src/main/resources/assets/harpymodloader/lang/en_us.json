@@ -16,6 +16,9 @@
   "commands.forcerole.query": "Player %s is forced to have role %s",
   "commands.forcerole.query.none": "Player %s does not have a forced role",
 
+  "commands.guaranteerole.success": "Guaranteed role %s",
+  "commands.guaranteemodifier.success": "Guaranteed modifer %s",
+
   "commands.listroles.role.title": "§bRoles:",
   "commands.listroles.modifier.title": "§eModifiers:",
   "commands.listroles.status.enabled.text": "§a[Enabled]",
