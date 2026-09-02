@@ -48,6 +48,7 @@ public class Harpymodloader implements ModInitializer {
     public static ArrayList<Role> VANNILA_ROLES = new ArrayList<>();
     public static ArrayList<Role> SPECIAL_ROLES = new ArrayList<>();
     public static ArrayList<Role> OVERWRITE_ROLES = new ArrayList<>();
+    public static ArrayList<Role> NON_MURDER_ROLES = new ArrayList<>();
     public static String MOD_ID = "harpymodloader";
 
     public static GameMode MODDED_GAMEMODE;

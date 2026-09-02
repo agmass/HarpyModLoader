@@ -172,10 +172,10 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         // shuffle roles so modded roles are different every time
         ArrayList<Role> shuffledCivillianRoles = new ArrayList<>(WatheRoles.ROLES);
-        shuffledCivillianRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || !role.isInnocent());
+        shuffledCivillianRoles.removeIf(role -> Harpymodloader.NON_MURDER_ROLES.contains(role) ||Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || !role.isInnocent());
 
         ArrayList<Role> shuffledNeutralRoles = new ArrayList<>(WatheRoles.ROLES);
-        shuffledNeutralRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || role.isInnocent());
+        shuffledNeutralRoles.removeIf(role -> Harpymodloader.NON_MURDER_ROLES.contains(role) || Harpymodloader.VANNILA_ROLES.contains(role) || role.canUseKiller() || role.isInnocent());
 
         ArrayList<ServerPlayerEntity> playersForCivillianRoles = new ArrayList<>(players);
         playersForCivillianRoles.removeIf(player -> {
@@ -239,7 +239,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         // shuffle roles so modded roles are different every time
         ArrayList<Role> shuffledKillerRoles = new ArrayList<>(WatheRoles.ROLES);
-        shuffledKillerRoles.removeIf(role -> Harpymodloader.VANNILA_ROLES.contains(role) || !role.canUseKiller());
+        shuffledKillerRoles.removeIf(role -> Harpymodloader.NON_MURDER_ROLES.contains(role) ||Harpymodloader.VANNILA_ROLES.contains(role) || !role.canUseKiller());
 
         ArrayList<ServerPlayerEntity> playersForKillerRoles = new ArrayList<>(players);
         playersForKillerRoles.removeIf(player -> {
@@ -319,7 +319,6 @@ public class ModdedMurderGameMode extends MurderGameMode {
         int i = 0;
         for(ServerPlayerEntity player : assignedPlayers) {
             gameWorldComponent.addRole(player,role);
-            Log.info(LogCategory.GENERAL, player.getNameForScoreboard() + " || " + role.identifier());
             ModdedRoleAssigned.EVENT.invoker().assignModdedRole(player,role);
             i++;
         }
