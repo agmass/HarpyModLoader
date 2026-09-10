@@ -1,6 +1,10 @@
 package org.agmas.harpymodloader.client.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import dev.doctor4t.wathe.api.GameMode;
+import dev.doctor4t.wathe.api.WatheGameModes;
 import dev.doctor4t.wathe.api.WatheRoles;
 import dev.doctor4t.wathe.cca.GameWorldComponent;
 import dev.doctor4t.wathe.client.WatheClient;
@@ -58,4 +62,12 @@ public abstract class CustomRolesRoleNameRendererMixin {
             HarpymodloaderClient.modifiers = null;
         }
     }
+
+    @WrapOperation(method = "renderHud", at = @At(value = "INVOKE", target = "Ldev/doctor4t/wathe/cca/GameWorldComponent;getGameMode()Ldev/doctor4t/wathe/api/GameMode;"))
+    private static GameMode d(GameWorldComponent instance, Operation<GameMode> original) {
+        GameMode or = original.call(instance);
+        if (or.equals(Harpymodloader.SECRET_MODDED_GAMEMODE)) return WatheGameModes.SECRET_MURDER;
+        return or;
+    }
+
 }

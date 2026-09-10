@@ -7,7 +7,7 @@ import dev.doctor4t.wathe.cca.ScoreboardRoleSelectorComponent;
 import dev.doctor4t.wathe.cca.TrainWorldComponent;
 import dev.doctor4t.wathe.client.gui.RoleAnnouncementTexts;
 import dev.doctor4t.wathe.game.gamemode.MurderGameMode;
-import dev.doctor4t.wathe.util.AnnounceWelcomePayload;
+import dev.doctor4t.wathe.network.AnnounceWelcomePayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.fabricmc.loader.impl.util.log.LogCategory;
@@ -289,7 +289,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
 
         for(ServerPlayerEntity player : players) {
             if (!Harpymodloader.FORCED_MODDED_ROLE_FLIP.containsKey(player.getUuid()) && Harpymodloader.OVERWRITE_ROLES.contains(gameWorldComponent.getRole(player))) {
-                float weight = (float)Math.exp((-ModdedWeights.roleRounds.get(role).getOrDefault(player.getUuid(),1) * 4));
+                float weight = (float)Math.exp((-ModdedWeights.roleRounds.getOrDefault(role, new HashMap<>()).getOrDefault(player.getUuid(),1) * 4));
                 if (!gameWorldComponent.areWeightsEnabled()) {
                     weight = 1.0F;
                 }
@@ -309,7 +309,7 @@ public class ModdedMurderGameMode extends MurderGameMode {
                         assignedPlayers.add(entry.getKey());
                         total -= entry.getValue();
                         map.remove(entry.getKey());
-                        ModdedWeights.roleRounds.get(role).put(entry.getKey().getUuid(), ModdedWeights.roleRounds.get(role).getOrDefault(entry.getKey().getUuid(), 1) + 1);
+                        ModdedWeights.roleRounds.getOrDefault(role, new HashMap<>()).put(entry.getKey().getUuid(), ModdedWeights.roleRounds.getOrDefault(role, new HashMap<>()).getOrDefault(entry.getKey().getUuid(), 1) + 1);
                         break;
                     }
                 }
